@@ -7,10 +7,10 @@ import App from './App';
 import {AuthContextProvider} from './store/AuthContext'
 
 ReactDOM.render(
-  <AuthContextProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </AuthContextProvider>,
-  document.getElementById('root')
+    <AuthContextProvider>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    </AuthContextProvider>,
+    document.getElementById('root')
 );
