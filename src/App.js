@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ProfilePage from './pages/ProfilePage';
 import TodoListPage from './pages/TodoListPage';
+import CreateTodoPage from './pages/CreateTodoPage';
 import ChangePasswordPage from './pages/ChangePasswordPage';
 
 import AuthContext from './store/AuthContext';
@@ -35,6 +36,10 @@ function App() {
                 <Route path="/todolist">
                     {!authCtx.isLoggedIn && <Redirect to="/" />}
                     {authCtx.isLoggedIn && <TodoListPage />}
+                </Route>
+                <Route path="/createtodo">
+                    {!authCtx.isLoggedIn && <Redirect to="/" />}
+                    {authCtx.isLoggedIn && <CreateTodoPage />}
                 </Route>
                 <Route path="/changepassword">
                     {!authCtx.isLoggedIn && <Redirect to="/" />}

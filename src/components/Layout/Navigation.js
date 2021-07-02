@@ -41,6 +41,13 @@ const Navigation = () => {
                 }
                 {authCxt.isLoggedIn &&
                     <li>
+                        <NavLink activeClassName={classes.active} to="/createtodo">
+                            CreateTodo
+                        </NavLink>
+                    </li>
+                }
+                {authCxt.isLoggedIn &&
+                    <li>
                         <NavLink activeClassName={classes.active} to="/changepassword">
                             ChangePassword
                         </NavLink>
