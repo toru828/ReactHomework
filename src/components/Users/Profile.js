@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router";
-import axios  from "axios";
+import axios from "axios";
 
 import Card from "../UI/Card/Card";
 import classes from "./Profile.module.css";
@@ -14,36 +14,37 @@ const Profile = () => {
     const history = useHistory();
 
     useEffect(() => {
-        axios.get('http://localhost:5151/profile', {
-            headers: {
-                "Authorization": token
-            }
-        })
-        .then(response => {
-            setUser(response.data.data);
-            setError(null);
-        })
-        .catch((error) => {
-            if (error.response) {
-                if (error.response.status === 401) {
-                    history.push("/login");
-                    return
+        axios
+            .get("http://localhost:5151/profile", {
+                headers: {
+                    Authorization: token,
+                },
+            })
+            .then((response) => {
+                setUser(response.data.data);
+                setError(null);
+            })
+            .catch((error) => {
+                if (error.response) {
+                    if (error.response.status === 401) {
+                        history.push("/login");
+                        return;
+                    }
                 }
-            }
-            setError(error.message);
-        });
+                setError(error.message);
+            });
     }, []);
 
     return (
         <Card className={classes.profile}>
             <h1>User Profile</h1>
             {error && <p>{error}</p>}
-            {!!user &&
+            {!!user && (
                 <div>
                     <p>Name: {user.fullname}</p>
                     <p>Email: {user.email}</p>
                 </div>
-            }
+            )}
         </Card>
     );
 };

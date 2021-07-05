@@ -1,64 +1,71 @@
-import React, {
-    useState,
-    useRef,
-    Fragment,
-    useContext 
-} from "react";
-  
-import axios  from "axios";
+import React, { useState, useRef, Fragment, useContext } from "react";
+
+import { useHistory } from "react-router";
+
+import axios from "axios";
 import Card from "../UI/Card/Card";
 import classes from "./Auth.module.css";
 import Button from "../UI/Button/Button";
 import AuthContext from "../../store/AuthContext";
-  
+
 const ChangePasswordForm = () => {
     const [isFormValid, setIsFormValid] = useState(false);
     const [isShowForm, setShowForm] = useState(true);
     const [message, setMessage] = useState(null);
+    const [error, setError] = useState(null);
+    const history = useHistory();
 
     const authCtx = useContext(AuthContext);
     const token = authCtx.token;
 
     const passwordInput = useRef();
 
-    const checkFomValidHandler= () => {
-        if (
-        passwordInput.current.value === "") {
+    const checkFomValidHandler = () => {
+        if (passwordInput.current.value === "") {
             setIsFormValid(false);
             return;
-    }
+        }
         setIsFormValid(true);
-    }
-  
+    };
+
     const submitHandler = (e) => {
         e.preventDefault();
         if (!isFormValid) {
             return;
         }
-        axios.post('http://localhost:5151/change_password',
-            {
-                "new_password": passwordInput.current.value
-            },
-            {
-                headers: {
-                    "Authorization": token
+        axios
+            .post(
+                "http://localhost:5151/change_password",
+                {
+                    new_password: passwordInput.current.value,
+                },
+                {
+                    headers: {
+                        Authorization: token,
+                    },
                 }
-            }
-        )
-
-        .then(response => {
-            if (response.status === 200) {
-                setMessage("Password has changed");
-                setShowForm(false);
-                return;
-            }
-            setMessage("Failed to change password. Please check information!");
-        })
-        .catch((error) => {
-            setMessage(error.message);
-        });
+            )
+            .then((response) => {
+                if (response.status === 200) {
+                    setMessage("Password has changed");
+                    setShowForm(false);
+                    return;
+                }
+                setMessage(
+                    "Failed to change password. Please check information!"
+                );
+            })
+            .catch((error) => {
+                if (error.response) {
+                    if (error.response.status === 401) {
+                        history.push("/login");
+                        return;
+                    }
+                }
+                setError(error.message);
+            });
     };
-  
+
     return (
         <Fragment>
             <Card className={classes.auth}>
@@ -66,12 +73,13 @@ const ChangePasswordForm = () => {
                 {isShowForm && (
                     <form onSubmit={submitHandler}>
                         <div className={classes.control}>
-                          <label htmlFor="password">New Password</label>
-                          <input type="password"
-                              id="password"
-                              ref={passwordInput}
-                              onChange={checkFomValidHandler}
-                          />
+                            <label htmlFor="password">New Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                ref={passwordInput}
+                                onChange={checkFomValidHandler}
+                            />
                         </div>
                         <div className={classes.actions}>
                             <Button
@@ -88,5 +96,5 @@ const ChangePasswordForm = () => {
         </Fragment>
     );
 };
-  
-export default ChangePasswordForm;  
+
+export default ChangePasswordForm;

@@ -1,7 +1,7 @@
 import TodoList from "../components/Todos/TodoList";
 
 function TodoListPage() {
-    return <TodoList />
+    return <TodoList />;
 }
 
 export default TodoListPage;

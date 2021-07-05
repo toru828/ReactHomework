@@ -1,7 +1,7 @@
 import CreateTodoForm from "../components/Todos/CreateTodo";
 
 function CreateTodoPage() {
-    return <CreateTodoForm />
+    return <CreateTodoForm />;
 }
 
 export default CreateTodoPage;

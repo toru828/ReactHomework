@@ -1,10 +1,10 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext } from "react";
 
-import Card from '../UI/Card/Card';
-import classes from './Auth.module.css';
-import Button from '../UI/Button/Button';
+import Card from "../UI/Card/Card";
+import classes from "./Auth.module.css";
+import Button from "../UI/Button/Button";
 
-import AuthContext from '../../store/AuthContext';
+import AuthContext from "../../store/AuthContext";
 
 const LoginForm = () => {
     const [isFormValid, setIsFormValid] = useState(false);
@@ -15,14 +15,16 @@ const LoginForm = () => {
     const emailInput = useRef();
     const passwordInput = useRef();
 
-    const checkFomValidHandler= () => {
-        if (emailInput.current.value === "" ||
-            passwordInput.current.value === "") {
-                setIsFormValid(false);
-                return;
+    const checkFomValidHandler = () => {
+        if (
+            emailInput.current.value === "" ||
+            passwordInput.current.value === ""
+        ) {
+            setIsFormValid(false);
+            return;
         }
         setIsFormValid(true);
-    }
+    };
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -33,25 +35,27 @@ const LoginForm = () => {
         const password = passwordInput.current.value;
         const signupAPI = `http://localhost:5151/login?email=${email}&password=${password}`;
         fetch(signupAPI)
-        .then(response => {
-            if (response.status !== 200) {
-                throw new Error("Your email or password is invalid!");
-            }
-            return response.json();
-        })
-        .then(data => {
-            authCtx.login(data.data);
-        })
-        .catch((error) => {
-            setMessage(error.message);
-        });
-    }
+            .then((response) => {
+                if (response.status !== 200) {
+                    throw new Error("Your email or password is invalid!");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                authCtx.login(data.data);
+            })
+            .catch((error) => {
+                setMessage(error.message);
+            });
+    };
 
     return (
         <Card className={classes.auth}>
             {message && <p className={classes.error}>{message}</p>}
-            {authCtx.isLoggedIn && <p className={classes.success}>Login successfully.</p>}
-            {!authCtx.isLoggedIn && 
+            {authCtx.isLoggedIn && (
+                <p className={classes.success}>Login successfully.</p>
+            )}
+            {!authCtx.isLoggedIn && (
                 <form onSubmit={submitHandler}>
                     <div className={classes.control}>
                         <label htmlFor="email">Email</label>
@@ -72,12 +76,16 @@ const LoginForm = () => {
                         />
                     </div>
                     <div className={classes.actions}>
-                        <Button type="submit" className={classes.btn} disabled={!isFormValid}>
+                        <Button
+                            type="submit"
+                            className={classes.btn}
+                            disabled={!isFormValid}
+                        >
                             Login
                         </Button>
                     </div>
-              </form>
-            }
+                </form>
+            )}
         </Card>
     );
 };

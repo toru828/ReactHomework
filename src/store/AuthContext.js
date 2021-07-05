@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const AuthContext = React.createContext({
-    token: '',
+    token: "",
     isLoggedIn: false,
     login: (token) => {},
     logout: () => {},
 });
 
 export const AuthContextProvider = (props) => {
-    const tokenStoreKey = 'token';
+    const tokenStoreKey = "token";
     const storedToken = localStorage.getItem(tokenStoreKey);
     const [token, setToken] = useState(storedToken);
 
