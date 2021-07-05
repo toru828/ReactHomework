@@ -4,11 +4,14 @@ import Card from "../UI/Card/Card";
 import classes from "./CreateTodo.module.css";
 import Button from "../UI/Button/Button";
 import AuthContext from "../../store/AuthContext";
+import { useHistory } from "react-router";
 
 const CreateTodoForm = () => {
     const [isFormValid, setIsFormValid] = useState(false);
     const [isShowForm, setShowForm] = useState(true);
     const [message, setMessage] = useState(null);
+    const history = useHistory();
+    const [error, setError] = useState(null);
 
     const titleInput = useRef();
     const descriptionInput = useRef();
