@@ -50,7 +50,7 @@ const CreateTodoForm = () => {
         })
             .then((response) => {
                 if (response.status === 200) {
-                    setMessage("Signup successfully");
+                    setMessage("Successful to create");
                     setShowForm(false);
                     return;
                 }

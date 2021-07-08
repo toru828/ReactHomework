@@ -34,6 +34,7 @@ const TodoList = () => {
                     }
                 }
                 setError(error.message);
+                setIsLoading(false);
             });
     }, []);
 
