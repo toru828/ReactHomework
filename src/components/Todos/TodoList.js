@@ -24,7 +24,6 @@ const TodoList = () => {
             .then((response) => {
                 setTodoList(response.data.data);
                 setError(null);
-                setIsLoading(false);
             })
             .catch((error) => {
                 if (error.response) {
@@ -34,6 +33,8 @@ const TodoList = () => {
                     }
                 }
                 setError(error.message);
+            })
+            .then(() => {
                 setIsLoading(false);
             });
     }, []);
