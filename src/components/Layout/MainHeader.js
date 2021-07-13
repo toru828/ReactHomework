@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import Navigation from './Navigation';
-import classes from './MainHeader.module.css';
+import Navigation from "./Navigation";
+import classes from "./MainHeader.module.css";
 
 const MainHeader = () => {
-  return (
-    <header className={classes['main-header']}>
-      <h1>Authentication</h1>
-      <Navigation />
-    </header>
-  );
+    return (
+        <header className={classes["main-header"]}>
+            <h1>Authentication</h1>
+            <Navigation />
+        </header>
+    );
 };
 
 export default MainHeader;

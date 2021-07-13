@@ -38,6 +38,25 @@
     background: #fbdada;
 }
 
+.control textarea {
+    flex: 3;
+    font: inherit;
+    padding: 0.35rem 0.35rem;
+    border-radius: 6px;
+    border: 1px solid #00dbde;
+}
+
+.control textarea:focus {
+    outline: none;
+    border-color: #337ab7;
+    background: #f6dbfc;
+}
+
+.control.invalid textarea {
+    border-color: red;
+    background: #fbdada;
+}
+
 .actions {
     text-align: center;
 }

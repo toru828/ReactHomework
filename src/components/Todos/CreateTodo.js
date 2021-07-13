@@ -1,23 +1,28 @@
-import React, { useState, useRef, Fragment } from "react";
+import React, { useState, useRef, Fragment, useContext } from "react";
 
 import Card from "../UI/Card/Card";
-import classes from "./Auth.module.css";
+import classes from "./CreateTodo.module.css";
 import Button from "../UI/Button/Button";
+import AuthContext from "../../store/AuthContext";
+import { useHistory } from "react-router";
 
-const SignupForm = () => {
+const CreateTodoForm = () => {
     const [isFormValid, setIsFormValid] = useState(false);
     const [isShowForm, setShowForm] = useState(true);
     const [message, setMessage] = useState(null);
+    const history = useHistory();
+    const [error, setError] = useState(null);
 
-    const emailInput = useRef();
-    const fullnameInput = useRef();
-    const passwordInput = useRef();
+    const titleInput = useRef();
+    const descriptionInput = useRef();
+
+    const authCtx = useContext(AuthContext);
+    const token = authCtx.token;
 
     const checkFomValidHandler = () => {
         if (
-            emailInput.current.value === "" ||
-            fullnameInput.current.value === "" ||
-            passwordInput.current.value === ""
+            titleInput.current.value === "" ||
+            descriptionInput.current.value === ""
         ) {
             setIsFormValid(false);
             return;
@@ -30,29 +35,35 @@ const SignupForm = () => {
         if (!isFormValid) {
             return;
         }
-        const signupAPI = "http://localhost:5151/signup";
-        const signupData = {
-            email: emailInput.current.value,
-            fullname: fullnameInput.current.value,
-            password: passwordInput.current.value,
+        const createTodoAPI = "http://localhost:5151/todos";
+        const createTodoData = {
+            title: titleInput.current.value,
+            description: descriptionInput.current.value,
         };
-        fetch(signupAPI, {
+        fetch(createTodoAPI, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: token,
             },
-            body: JSON.stringify(signupData),
+            body: JSON.stringify(createTodoData),
         })
             .then((response) => {
                 if (response.status === 200) {
-                    setMessage("Signup successfully");
+                    setMessage("Successful to create");
                     setShowForm(false);
                     return;
                 }
-                setMessage("Signup failed, please check information!");
+                setMessage("Failed to create Todo, please check information!");
             })
             .catch((error) => {
-                setMessage(error.message);
+                if (error.response) {
+                    if (error.response.status === 401) {
+                        history.push("/login");
+                        return;
+                    }
+                }
+                setError(error.message);
             });
     };
 
@@ -63,29 +74,20 @@ const SignupForm = () => {
                 {isShowForm && (
                     <form onSubmit={submitHandler}>
                         <div className={classes.control}>
-                            <label htmlFor="email">Email</label>
+                            <label htmlFor="title">Title</label>
                             <input
-                                type="email"
-                                id="email"
-                                ref={emailInput}
+                                type="title"
+                                id="title"
+                                ref={titleInput}
                                 onChange={checkFomValidHandler}
                             />
                         </div>
                         <div className={classes.control}>
-                            <label htmlFor="fullname">Full Name</label>
-                            <input
-                                type="text"
-                                id="fullname"
-                                ref={fullnameInput}
-                                onChange={checkFomValidHandler}
-                            />
-                        </div>
-                        <div className={classes.control}>
-                            <label htmlFor="password">Password</label>
-                            <input
-                                type="password"
-                                id="password"
-                                ref={passwordInput}
+                            <label htmlFor="description">Description</label>
+                            <textarea
+                                type="description"
+                                id="description"
+                                ref={descriptionInput}
                                 onChange={checkFomValidHandler}
                             />
                         </div>
@@ -95,7 +97,7 @@ const SignupForm = () => {
                                 className={classes.btn}
                                 disabled={!isFormValid}
                             >
-                                Signup
+                                CreateTodo
                             </Button>
                         </div>
                     </form>
@@ -105,4 +107,4 @@ const SignupForm = () => {
     );
 };
 
-export default SignupForm;
+export default CreateTodoForm;
